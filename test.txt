@@ -1,0 +1,14 @@
+true;
+if false then true else false; 
+
+x = true;
+/* Without type checking, this should be evalued */
+if x then (lambda x. x)(lambda x.x x) else true;
+
+(lambda x. x) (lambda x. x x);
+
+
+0; 
+succ (pred 0);
+iszero (pred (succ (succ 0))); 
+
