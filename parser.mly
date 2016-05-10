@@ -3,10 +3,6 @@
  *  are generated automatically from parser.mly.
  */
 
-/* File is changed based on original ones,
-    I delete some unused tokens and Keyword
-*/
-
 %{
 open Support.Error
 open Support.Pervasive
@@ -26,16 +22,18 @@ open Syntax
  */
 
 /* Keyword tokens */
+%token <Support.Error.info> TYPE
 %token <Support.Error.info> IF
 %token <Support.Error.info> THEN
 %token <Support.Error.info> ELSE
 %token <Support.Error.info> TRUE
 %token <Support.Error.info> FALSE
+%token <Support.Error.info> BOOL
 %token <Support.Error.info> LAMBDA
 %token <Support.Error.info> SUCC
 %token <Support.Error.info> PRED
 %token <Support.Error.info> ISZERO
-%token <Support.Error.info> IN
+%token <Support.Error.info> NAT
 
 /* Identifier and constant value tokens */
 %token <string Support.Error.withinfo> UCID  /* uppercase-initial */
@@ -119,48 +117,98 @@ toplevel :
 Command :
   | Term 
       { fun ctx -> (let t = $1 ctx in Eval(tmInfo t,t)),ctx }
+  | UCID TyBinder
+      { fun ctx -> ((Bind($1.i, $1.v, $2 ctx)), addname ctx $1.v) }
   | LCID Binder
       { fun ctx -> ((Bind($1.i,$1.v,$2 ctx)), addname ctx $1.v) }
 
 /* Right-hand sides of top-level bindings */
 Binder :
-    SLASH
-      { fun ctx -> NameBind }
-  | EQ Term
-      { fun ctx -> TmAbbBind($2 ctx) }
+    COLON Type
+      { fun ctx -> VarBind ($2 ctx)}
+  | EQ Term 
+      { fun ctx -> TmAbbBind($2 ctx, None) }
+
+/* All type expressions */
+Type :
+    ArrowType
+                { $1 }
+
+/* Atomic types are those that never need extra parentheses */
+AType :
+    LPAREN Type RPAREN  
+           { $2 } 
+  | UCID 
+      { fun ctx ->
+          if isnamebound ctx $1.v then
+            TyVar(name2index $1.i ctx $1.v, ctxlength ctx)
+          else 
+            TyId($1.v) }
+  | BOOL
+      { fun ctx -> TyBool }
+  | NAT
+      { fun ctx -> TyNat }
+
+TyBinder :
+    /* empty */
+      { fun ctx -> TyVarBind }
+  | EQ Type
+      { fun ctx -> TyAbbBind($2 ctx) }
+
+FieldTypes :
+    /* empty */
+      { fun ctx i -> [] }
+  | NEFieldTypes
+      { $1 }
+
+NEFieldTypes :
+    FieldType
+      { fun ctx i -> [$1 ctx i] }
+  | FieldType COMMA NEFieldTypes
+      { fun ctx i -> ($1 ctx i) :: ($3 ctx (i+1)) }
+
+FieldType :
+    LCID COLON Type
+      { fun ctx i -> ($1.v, $3 ctx) }
+  | Type
+      { fun ctx i -> (string_of_int i, $1 ctx) }
+
+/* An "arrow type" is a sequence of atomic types separated by
+   arrows. */
+ArrowType :
+    AType ARROW ArrowType
+     { fun ctx -> TyArr($1 ctx, $3 ctx) }
+  | AType
+            { $1 }
 
 Term :
     AppTerm
       { $1 }
   | IF Term THEN Term ELSE Term
       { fun ctx -> TmIf($1, $2 ctx, $4 ctx, $6 ctx) }
-  | LAMBDA LCID DOT Term 
+      /* LAMBDA must be specified a type */
+  | LAMBDA LCID COLON Type DOT Term 
       { fun ctx ->
           let ctx1 = addname ctx $2.v in
-          TmAbs($1, $2.v, $4 ctx1) }
-  | LAMBDA USCORE DOT Term 
+          TmAbs($1, $2.v, $4 ctx, $6 ctx1) }
+  | LAMBDA USCORE COLON Type DOT Term 
       { fun ctx ->
           let ctx1 = addname ctx "_" in
-          TmAbs($1, "_", $4 ctx1) }
-  
+          TmAbs($1, "_", $4 ctx, $6 ctx1) }
 AppTerm :
-    PathTerm
+    ATerm
       { $1 }
-  | AppTerm PathTerm
+  | AppTerm ATerm
       { fun ctx ->
           let e1 = $1 ctx in
           let e2 = $2 ctx in
           TmApp(tmInfo e1,e1,e2) }
-  | SUCC PathTerm
+  | SUCC ATerm
       { fun ctx -> TmSucc($1, $2 ctx) }
-  | PRED PathTerm
+  | PRED ATerm
       { fun ctx -> TmPred($1, $2 ctx) }
-  | ISZERO PathTerm
+  | ISZERO ATerm
       { fun ctx -> TmIsZero($1, $2 ctx) }
-
-PathTerm :
-  | ATerm
-      { $1 }
 
 /* Atomic terms are ones that never require extra parentheses */
 ATerm :
@@ -179,6 +227,18 @@ ATerm :
               0 -> TmZero($1.i)
             | n -> TmSucc($1.i, f (n-1))
           in f $1.v }
+
+Cases :
+    Case
+      { fun ctx -> [$1 ctx] }
+  | Case VBAR Cases
+      { fun ctx -> ($1 ctx) :: ($3 ctx) }
+
+Case :
+    LT LCID EQ LCID GT DDARROW AppTerm
+      { fun ctx ->
+          let ctx1 = addname ctx $4.v in
+          ($2.v, ($4.v, $7 ctx1)) }
 
 Fields :
     /* empty */

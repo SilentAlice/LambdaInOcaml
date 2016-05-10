@@ -4,8 +4,6 @@
    
    The only modification commonly needed here is adding new keywords to the 
    list of reserved words at the top.  
-
-   For simplicity, I delete tokens which I don't use
 *)
 
 {
@@ -13,16 +11,18 @@ open Support.Error
 
 let reservedWords = [
   (* Keywords *)
+  ("type", fun i -> Parser.TYPE i);
   ("if", fun i -> Parser.IF i);
   ("then", fun i -> Parser.THEN i);
   ("else", fun i -> Parser.ELSE i);
   ("true", fun i -> Parser.TRUE i);
   ("false", fun i -> Parser.FALSE i);
+  ("Bool", fun i -> Parser.BOOL i);
+  ("lambda", fun i -> Parser.LAMBDA i);
   ("succ", fun i -> Parser.SUCC i);
   ("pred", fun i -> Parser.PRED i);
   ("iszero", fun i -> Parser.ISZERO i);
-
-  ("lambda", fun i -> Parser.LAMBDA i);
+  ("Nat", fun i -> Parser.NAT i);
   
   (* Symbols *)
   ("_", fun i -> Parser.USCORE i);
@@ -147,6 +147,7 @@ rule main = parse
 | ['0'-'9']+
     { Parser.INTV{i=info lexbuf; v=int_of_string (text lexbuf)} }
 
+
 | ['A'-'Z' 'a'-'z' '_']
   ['A'-'Z' 'a'-'z' '_' '0'-'9' '\'']*
     { createID (info lexbuf) (text lexbuf) }
@@ -188,6 +189,7 @@ and getName = parse
 
 and finishName = parse
   '"' [^ '\n']* { main lexbuf }
+
 and string = parse
 | '\\' { addStr(escaped lexbuf); string lexbuf }
 | '\n' { addStr '\n'; newline lexbuf; string lexbuf }

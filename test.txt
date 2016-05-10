@@ -1,14 +1,17 @@
-true;
-if false then true else false; 
+/* Examples for testing */
 
-x = true;
-/* Without type checking, this should be evalued */
-if x then (lambda x. x)(lambda x.x x) else true;
+  
+ lambda x:Bool. x;
+ 
 
-(lambda x. x) (lambda x. x x);
+lambda x:A. x;
 
+lambda x:Bool. x;
+(lambda x:Bool->Bool. if x false then true else false) 
+  (lambda x:Bool. if x then false else true); 
 
-0; 
-succ (pred 0);
-iszero (pred (succ (succ 0))); 
+lambda x:Nat. succ x;
+(lambda x:Nat. succ (succ x)) (succ 0); 
+
+T = Nat->Nat;
 

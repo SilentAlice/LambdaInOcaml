@@ -4,6 +4,13 @@ open Support.Pervasive
 open Support.Error
 
 (* Data type definitions *)
+type ty =
+    TyVar of int * int
+  | TyId of string
+  | TyArr of ty * ty
+  | TyBool
+  | TyNat
+
 type term =
     TmTrue of info
   | TmFalse of info
@@ -13,12 +20,15 @@ type term =
   | TmPred of info * term
   | TmIsZero of info * term
   | TmVar of info * int * int
-  | TmAbs of info * string * term
+  | TmAbs of info * string * ty * term
   | TmApp of info * term * term
 
 type binding =
     NameBind 
-  | TmAbbBind of term
+  | VarBind of ty
+  | TyVarBind
+  | TmAbbBind of term * (ty option)
+  | TyAbbBind of ty
 
 type command =
   | Eval of info * term
@@ -34,16 +44,20 @@ val index2name : info -> context -> int -> string
 val getbinding : info -> context -> int -> binding
 val name2index : info -> context -> string -> int
 val isnamebound : context -> string -> bool
-
+val getTypeFromContext : info -> context -> int -> ty
 
 (* Shifting and substitution *)
 val termShift: int -> term -> term
 val termSubstTop: term -> term -> term
+val typeShift : int -> ty -> ty
+val typeSubstTop: ty -> ty -> ty
+val tytermSubstTop: ty -> term -> term
 
 (* Printing *)
 val printtm: context -> term -> unit
 val printtm_ATerm: bool -> context -> term -> unit
 val prbinding : context -> binding -> unit
+val printty : context -> ty -> unit
 
 (* Misc *)
 val tmInfo: term -> info

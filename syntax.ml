@@ -3,8 +3,15 @@ open Support.Error
 open Support.Pervasive
 
 (* ---------------------------------------------------------------------- *)
-(* Datatypes, extended with app TmApp TmAbs TmVar *)
+(* New Added Types *)
+type ty =
+    TyVar of int * int
+  | TyId of string
+  | TyArr of ty * ty
+  | TyBool
+  | TyNat
 
+(* Datatypes, extended with app TmApp TmAbs TmVar *)
 type term =
     | TmTrue of info
     | TmFalse of info
@@ -15,14 +22,17 @@ type term =
     | TmIsZero of info * term
     (* Extended *)
     | TmVar of info * int * int
-    | TmAbs of info * string * term
+    | TmAbs of info * string * ty * term
     | TmApp of info * term * term
 
 (* var should be bound a value *)
 type binding =
     | NameBind 
-    | TmAbbBind of term
-
+    | VarBind of ty
+    | TyVarBind
+    | TmAbbBind of term * (ty option)
+    | TyAbbBind of ty
+    
 type context = (string * binding) list
 
 type command =
@@ -72,45 +82,83 @@ let rec name2index fi ctx x =
 (* ---------------------------------------------------------------------- *)
 (* Shifting *)
 
-let tmmap onvar c t = 
+let tymap onvar c tyT = 
+  let rec walk c tyT = match tyT with
+    TyVar(x,n) -> onvar c x n
+  | TyId(b) as tyT -> tyT
+  | TyBool -> TyBool
+  | TyNat -> TyNat
+  | TyArr(tyT1,tyT2) -> TyArr(walk c tyT1,walk c tyT2)
+  in walk c tyT
+
+let tmmap onvar ontype c t = 
   let rec walk c t = match t with
-    (* n is used to indentify the length of var *)
   | TmVar(fi,x,n) -> onvar fi c x n
-  | TmAbs(fi,x,t2) -> TmAbs(fi,x,walk (c+1) t2)
+  | TmAbs(fi,x,tyT1,t2) -> TmAbs(fi,x,ontype c tyT1,walk (c+1) t2)
   | TmApp(fi,t1,t2) -> TmApp(fi,walk c t1,walk c t2)
+  | TmTrue(fi) as t -> t
+  | TmFalse(fi) as t -> t
+  | TmIf(fi,t1,t2,t3) -> TmIf(fi,walk c t1,walk c t2,walk c t3)
   | TmZero(fi)      -> TmZero(fi)
   | TmSucc(fi,t1)   -> TmSucc(fi, walk c t1)
   | TmPred(fi,t1)   -> TmPred(fi, walk c t1)
   | TmIsZero(fi,t1) -> TmIsZero(fi, walk c t1)
-  | TmTrue(fi) as t -> t
-  | TmFalse(fi) as t -> t
-  | TmIf(fi,t1,t2,t3) -> TmIf(fi,walk c t1,walk c t2,walk c t3)
   in walk c t
 
-(* n means length of var, for checking *)
+let typeShiftAbove d c tyT =
+  tymap
+    (fun c x n -> if x>=c then TyVar(x+d,n+d) else TyVar(x,n+d))
+    c tyT
+
 let termShiftAbove d c t =
   tmmap
-    (fun fi c x n -> if x>=c then TmVar(fi,x+d,n+d) else TmVar(fi,x,n+d))
+    (fun fi c x n -> if x>=c then TmVar(fi,x+d,n+d) 
+                     else TmVar(fi,x,n+d))
+    (typeShiftAbove d)
     c t
 
+    (*Shifting*)
 let termShift d t = termShiftAbove d 0 t
+
+let typeShift d tyT = typeShiftAbove d 0 tyT
 
 let bindingshift d bind =
   match bind with
     NameBind -> NameBind
-  | TmAbbBind(t) -> TmAbbBind(termShift d t)
+  | TyVarBind -> TyVarBind
+  | TmAbbBind(t,tyT_opt) ->
+     let tyT_opt' = match tyT_opt with
+                      None->None
+                    | Some(tyT) -> Some(typeShift d tyT) in
+     TmAbbBind(termShift d t, tyT_opt')
+  | VarBind(tyT) -> VarBind(typeShift d tyT)
+  | TyAbbBind(tyT) -> TyAbbBind(typeShift d tyT)
 
-(* ---------------------------------------------------------------------- *)
-(* Substitution *)
 
 let termSubst j s t =
   tmmap
-    (fun fi c x n -> if x=j+c then termShift c s else TmVar(fi,x,n))
-    0
-    t
+    (fun fi j x n -> if x=j then termShift j s else TmVar(fi,x,n))
+    (fun j tyT -> tyT)
+    j t
 
 let termSubstTop s t = 
   termShift (-1) (termSubst 0 (termShift 1 s) t)
+
+let typeSubst tyS j tyT =
+  tymap
+    (fun j x n -> if x=j then (typeShift j tyS) else (TyVar(x,n)))
+    j tyT
+
+let typeSubstTop tyS tyT = 
+  typeShift (-1) (typeSubst (typeShift 1 tyS) 0 tyT)
+
+let rec tytermSubst tyS j t =
+  tmmap (fun fi c x n -> TmVar(fi,x,n))
+        (fun j tyT -> typeSubst tyS j tyT) j t
+
+let tytermSubstTop tyS t = 
+  termShift (-1) (tytermSubst (typeShift 1 tyS) 0 t)
+
 
 (* ---------------------------------------------------------------------- *)
 (* Context management (continued) *)
@@ -124,6 +172,16 @@ let rec getbinding fi ctx i =
       Printf.sprintf "Variable lookup failure: offset: %d, ctx size: %d" in
     error fi (msg i (List.length ctx))
  
+let getTypeFromContext fi ctx i =
+   match getbinding fi ctx i with
+         VarBind(tyT) -> tyT
+     | TmAbbBind(_,Some(tyT)) -> tyT
+     | TmAbbBind(_,None) -> error fi ("gTyFromCtx: No type recorded for variable "
+                                        ^ (index2name fi ctx i))
+     | _ -> error fi 
+       ("getTypeFromContext: Wrong kind of binding for variable " 
+         ^ (index2name fi ctx i)) 
+
 (* ---------------------------------------------------------------------- *)
 (* Extracting file info *)
 
@@ -132,7 +190,7 @@ let tmInfo t = match t with
   | TmFalse(fi) -> fi
   | TmIf(fi,_,_,_) -> fi
   | TmVar(fi,_,_) -> fi
-  | TmAbs(fi,_,_) -> fi
+  | TmAbs(fi,_,_,_) -> fi
   | TmApp(fi, _, _) -> fi
   | TmZero(fi) -> fi
   | TmSucc(fi,_) -> fi
@@ -165,6 +223,36 @@ let small t =
     TmVar(_,_,_) -> true
   | _ -> false
 
+let rec printty_Type outer ctx tyT = match tyT with
+      tyT -> printty_ArrowType outer ctx tyT
+
+and printty_ArrowType outer ctx  tyT = match tyT with 
+    TyArr(tyT1,tyT2) ->
+      obox0(); 
+      printty_AType false ctx tyT1;
+      if outer then pr " ";
+      pr "->";
+      if outer then print_space() else break();
+      printty_ArrowType outer ctx tyT2;
+      cbox()
+  | tyT -> printty_AType outer ctx tyT
+
+and printty_AType outer ctx tyT = match tyT with
+    TyVar(x,n) ->
+      if ctxlength ctx = n then
+        pr (index2name dummyinfo ctx x)
+      else
+        pr ("[bad index: " ^ (string_of_int x) ^ "/" ^ (string_of_int n)
+            ^ " in {"
+            ^ (List.fold_left (fun s (x,_) -> s ^ " " ^ x) "" ctx)
+            ^ " }]")
+  | TyId(b) -> pr b
+  | TyBool -> pr "Bool"
+  | TyNat -> pr "Nat"
+  | tyT -> pr "("; printty_Type outer ctx tyT; pr ")"
+
+let printty ctx tyT = printty_Type true ctx tyT 
+
 let rec printtm_Term outer ctx t = match t with
     TmIf(fi, t1, t2, t3) ->
        obox0();
@@ -177,12 +265,13 @@ let rec printtm_Term outer ctx t = match t with
        pr "else ";
        printtm_Term false ctx t3;
        cbox()
-    | TmAbs(fi,x,t2) ->
+    | TmAbs(fi,x,tyT1,t2) ->
       (let (ctx',x') = (pickfreshname ctx x) in
-            obox(); pr "lambda "; pr x'; pr ".";
-            if (small t2) && not outer then break() else print_space();
-            printtm_Term outer ctx' t2;
-            cbox())
+         obox(); pr "lambda ";
+         pr x'; pr ":"; printty_Type false ctx tyT1; pr ".";
+         if (small t2) && not outer then break() else print_space();
+         printtm_Term outer ctx' t2;
+         cbox())
 
     | t -> printtm_AppTerm outer ctx t
 
@@ -227,6 +316,8 @@ let printtm ctx t = printtm_Term true ctx t
 
 let prbinding ctx b = match b with
     NameBind -> ()
-  | TmAbbBind(t) -> pr "= "; printtm ctx t 
-
+  | TyVarBind -> ()
+  | VarBind(tyT) -> pr ": "; printty ctx tyT
+  | TmAbbBind(t,tyT) -> pr "= "; printtm ctx t
+  | TyAbbBind(tyT) -> pr "= "; printty ctx tyT 
 
