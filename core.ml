@@ -18,6 +18,7 @@ let rec isval ctx t = match t with
     | TmFalse(_) -> true
     | t when isnumber ctx t  -> true
     | TmAbs(_,_,_,_) -> true
+    | TmRecord(_,fields) -> List.for_all (fun (l,ti) -> isval ctx ti) fields
     | _ -> false
 
 let rec eval1 ctx t = match t with
@@ -57,6 +58,17 @@ let rec eval1 ctx t = match t with
     | TmApp(fi,t1,t2) ->
         let t1' = eval1 ctx t1 in
         TmApp(fi, t1', t2)
+    | TmRecord(fi,fields) ->
+      let rec evalafield l = match l with 
+        [] -> raise NoRuleApplies
+      | (l,vi)::rest when isval ctx vi -> 
+          let rest' = evalafield rest in
+          (l,vi)::rest'
+      | (l,ti)::rest -> 
+          let ti' = eval1 ctx ti in
+          (l, ti')::rest
+      in let fields' = evalafield fields in
+      TmRecord(fi, fields')
 
     | _ -> 
         raise NoRuleApplies
@@ -71,8 +83,7 @@ let evalbinding ctx b = match b with
         let t' = eval ctx t in 
         TmAbbBind(t', tyT)
     | bind -> bind
-
-(*************************************** Type ************************************)
+(*************************** Subtyping *************************)
 let istyabb ctx i = 
   match getbinding dummyinfo ctx i with
     TyAbbBind(tyT) -> true
@@ -106,8 +117,99 @@ let rec tyeqv ctx tyS tyT =
   | (TyArr(tyS1,tyS2),TyArr(tyT1,tyT2)) ->
        (tyeqv ctx tyS1 tyT1) && (tyeqv ctx tyS2 tyT2)
   | (TyBool,TyBool) -> true
+  | (TyTop,TyTop) -> true
   | (TyNat,TyNat) -> true
+  | (TyRecord(fields1),TyRecord(fields2)) -> 
+       List.length fields1 = List.length fields2
+       &&                                         
+       List.for_all 
+         (fun (li2,tyTi2) ->
+            try let (tyTi1) = List.assoc li2 fields1 in
+                tyeqv ctx tyTi1 tyTi2
+            with Not_found -> false)
+         fields2
+
   | _ -> false
+
+let rec subtype ctx tyS tyT =
+   tyeqv ctx tyS tyT ||
+   let tyS = simplifyty ctx tyS in
+   let tyT = simplifyty ctx tyT in
+   match (tyS,tyT) with
+     (_,TyTop) -> 
+       true
+   | (TyArr(tyS1,tyS2),TyArr(tyT1,tyT2)) ->
+       (subtype ctx tyT1 tyS1) && (subtype ctx tyS2 tyT2)
+   | (TyRecord(fS), TyRecord(fT)) ->
+       List.for_all
+         (fun (li,tyTi) -> 
+            try let tySi = List.assoc li fS in
+                subtype ctx tySi tyTi
+            with Not_found -> false)
+         fT
+
+   | (_,_) -> 
+       false
+
+let rec join ctx tyS tyT =
+  if subtype ctx tyS tyT then tyT else 
+  if subtype ctx tyT tyS then tyS else
+  let tyS = simplifyty ctx tyS in
+  let tyT = simplifyty ctx tyT in
+  match (tyS,tyT) with
+    (TyRecord(fS), TyRecord(fT)) ->
+      let labelsS = List.map (fun (li,_) -> li) fS in
+      let labelsT = List.map (fun (li,_) -> li) fT in
+      let commonLabels = 
+        List.find_all (fun l -> List.mem l labelsT) labelsS in
+      let commonFields = 
+        List.map (fun li -> 
+                    let tySi = List.assoc li fS in
+                    let tyTi = List.assoc li fT in
+                    (li, join ctx tySi tyTi))
+                 commonLabels in
+      TyRecord(commonFields)
+  | (TyArr(tyS1,tyS2),TyArr(tyT1,tyT2)) ->
+      (try TyArr(meet ctx tyS1 tyT1, join ctx tyS2 tyT2)
+        with Not_found -> TyTop)
+  | _ -> 
+      TyTop
+
+and meet ctx tyS tyT =
+  if subtype ctx tyS tyT then tyS else 
+  if subtype ctx tyT tyS then tyT else 
+  let tyS = simplifyty ctx tyS in
+  let tyT = simplifyty ctx tyT in
+  match (tyS,tyT) with
+    (TyRecord(fS), TyRecord(fT)) ->
+      let labelsS = List.map (fun (li,_) -> li) fS in
+      let labelsT = List.map (fun (li,_) -> li) fT in
+      let allLabels = 
+        List.append
+          labelsS 
+          (List.find_all 
+            (fun l -> not (List.mem l labelsS)) labelsT) in
+      let allFields = 
+        List.map (fun li -> 
+                    if List.mem li allLabels then
+                      let tySi = List.assoc li fS in
+                      let tyTi = List.assoc li fT in
+                      (li, meet ctx tySi tyTi)
+                    else if List.mem li labelsS then
+                      (li, List.assoc li fS)
+                    else
+                      (li, List.assoc li fT))
+                 allLabels in
+      TyRecord(allFields)
+
+  | (TyArr(tyS1,tyS2),TyArr(tyT1,tyT2)) ->
+      TyArr(join ctx tyS1 tyT1, meet ctx tyS2 tyT2)
+  | _ -> 
+      raise Not_found
+
+(*************************************** Type ************************************)
+
+
 
 let rec typeof ctx t =
   match t with
@@ -131,7 +233,7 @@ let rec typeof ctx t =
       let tyT2 = typeof ctx t2 in
       (match simplifyty ctx tyT1 with
           TyArr(tyT11,tyT12) ->
-            if tyeqv ctx tyT2 tyT11 then tyT12
+            if subtype ctx tyT2 tyT11 then tyT12
             else error fi "typeof:TmApp type mismatch"
         | _ -> error fi "typeof:TmApp Arrow type expected")
   | TmZero(fi) ->
@@ -145,3 +247,9 @@ let rec typeof ctx t =
   | TmIsZero(fi,t1) ->
       if tyeqv ctx (typeof ctx t1) TyNat then TyBool
       else error fi "typeof: TmIsZero: Nat expected"
+  | TmRecord(fi, fields) ->
+      let fieldtys = 
+        List.map (fun (li,ti) -> (li, typeof ctx ti)) fields in
+      TyRecord(fieldtys)
+
+

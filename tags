@@ -1,0 +1,291 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+APOSTROPHE	parser.ml	/^  | APOSTROPHE of (Support.Error.info)$/;"	C	type:token
+APOSTROPHE	parser.mli	/^  | APOSTROPHE of (Support.Error.info)$/;"	C	type:token
+ARROW	parser.ml	/^  | ARROW of (Support.Error.info)$/;"	C	type:token
+ARROW	parser.mli	/^  | ARROW of (Support.Error.info)$/;"	C	type:token
+BANG	parser.ml	/^  | BANG of (Support.Error.info)$/;"	C	type:token
+BANG	parser.mli	/^  | BANG of (Support.Error.info)$/;"	C	type:token
+BARGT	parser.ml	/^  | BARGT of (Support.Error.info)$/;"	C	type:token
+BARGT	parser.mli	/^  | BARGT of (Support.Error.info)$/;"	C	type:token
+BARRCURLY	parser.ml	/^  | BARRCURLY of (Support.Error.info)$/;"	C	type:token
+BARRCURLY	parser.mli	/^  | BARRCURLY of (Support.Error.info)$/;"	C	type:token
+BARRSQUARE	parser.ml	/^  | BARRSQUARE of (Support.Error.info)$/;"	C	type:token
+BARRSQUARE	parser.mli	/^  | BARRSQUARE of (Support.Error.info)$/;"	C	type:token
+BOOL	parser.ml	/^  | BOOL of (Support.Error.info)$/;"	C	type:token
+BOOL	parser.mli	/^  | BOOL of (Support.Error.info)$/;"	C	type:token
+Bind	syntax.ml	/^    | Bind of info * string * binding$/;"	C	type:command
+Bind	syntax.mli	/^  | Bind of info * string * binding$/;"	C	type:command
+COLON	parser.ml	/^  | COLON of (Support.Error.info)$/;"	C	type:token
+COLON	parser.mli	/^  | COLON of (Support.Error.info)$/;"	C	type:token
+COLONCOLON	parser.ml	/^  | COLONCOLON of (Support.Error.info)$/;"	C	type:token
+COLONCOLON	parser.mli	/^  | COLONCOLON of (Support.Error.info)$/;"	C	type:token
+COLONEQ	parser.ml	/^  | COLONEQ of (Support.Error.info)$/;"	C	type:token
+COLONEQ	parser.mli	/^  | COLONEQ of (Support.Error.info)$/;"	C	type:token
+COLONHASH	parser.ml	/^  | COLONHASH of (Support.Error.info)$/;"	C	type:token
+COLONHASH	parser.mli	/^  | COLONHASH of (Support.Error.info)$/;"	C	type:token
+COMMA	parser.ml	/^  | COMMA of (Support.Error.info)$/;"	C	type:token
+COMMA	parser.mli	/^  | COMMA of (Support.Error.info)$/;"	C	type:token
+Core	core.ml	1;"	M
+Core	core.mli	1;"	M
+DARROW	parser.ml	/^  | DARROW of (Support.Error.info)$/;"	C	type:token
+DARROW	parser.mli	/^  | DARROW of (Support.Error.info)$/;"	C	type:token
+DDARROW	parser.ml	/^  | DDARROW of (Support.Error.info)$/;"	C	type:token
+DDARROW	parser.mli	/^  | DDARROW of (Support.Error.info)$/;"	C	type:token
+DOT	parser.ml	/^  | DOT of (Support.Error.info)$/;"	C	type:token
+DOT	parser.mli	/^  | DOT of (Support.Error.info)$/;"	C	type:token
+DQUOTE	parser.ml	/^  | DQUOTE of (Support.Error.info)$/;"	C	type:token
+DQUOTE	parser.mli	/^  | DQUOTE of (Support.Error.info)$/;"	C	type:token
+ELSE	parser.ml	/^  | ELSE of (Support.Error.info)$/;"	C	type:token
+ELSE	parser.mli	/^  | ELSE of (Support.Error.info)$/;"	C	type:token
+EOF	parser.ml	/^  | EOF of (Support.Error.info)$/;"	C	type:token
+EOF	parser.mli	/^  | EOF of (Support.Error.info)$/;"	C	type:token
+EQ	parser.ml	/^  | EQ of (Support.Error.info)$/;"	C	type:token
+EQ	parser.mli	/^  | EQ of (Support.Error.info)$/;"	C	type:token
+EQEQ	parser.ml	/^  | EQEQ of (Support.Error.info)$/;"	C	type:token
+EQEQ	parser.mli	/^  | EQEQ of (Support.Error.info)$/;"	C	type:token
+EXISTS	parser.ml	/^  | EXISTS of (Support.Error.info)$/;"	C	type:token
+EXISTS	parser.mli	/^  | EXISTS of (Support.Error.info)$/;"	C	type:token
+Error	support.ml	1;"	M
+Error	support.mli	1;"	M
+Eval	syntax.ml	/^    | Eval of info * term$/;"	C	type:command
+Eval	syntax.mli	/^  | Eval of info * term$/;"	C	type:command
+FALSE	parser.ml	/^  | FALSE of (Support.Error.info)$/;"	C	type:token
+FALSE	parser.mli	/^  | FALSE of (Support.Error.info)$/;"	C	type:token
+GT	parser.ml	/^  | GT of (Support.Error.info)$/;"	C	type:token
+GT	parser.mli	/^  | GT of (Support.Error.info)$/;"	C	type:token
+HASH	parser.ml	/^  | HASH of (Support.Error.info)$/;"	C	type:token
+HASH	parser.mli	/^  | HASH of (Support.Error.info)$/;"	C	type:token
+IF	parser.ml	/^  | IF of (Support.Error.info)$/;"	C	type:token
+IF	parser.mli	/^  | IF of (Support.Error.info)$/;"	C	type:token
+INTV	parser.ml	/^  | INTV of (int Support.Error.withinfo)$/;"	C	type:token
+INTV	parser.mli	/^  | INTV of (int Support.Error.withinfo)$/;"	C	type:token
+ISZERO	parser.ml	/^  | ISZERO of (Support.Error.info)$/;"	C	type:token
+ISZERO	parser.mli	/^  | ISZERO of (Support.Error.info)$/;"	C	type:token
+LAMBDA	parser.ml	/^  | LAMBDA of (Support.Error.info)$/;"	C	type:token
+LAMBDA	parser.mli	/^  | LAMBDA of (Support.Error.info)$/;"	C	type:token
+LCID	parser.ml	/^  | LCID of (string Support.Error.withinfo)$/;"	C	type:token
+LCID	parser.mli	/^  | LCID of (string Support.Error.withinfo)$/;"	C	type:token
+LCURLY	parser.ml	/^  | LCURLY of (Support.Error.info)$/;"	C	type:token
+LCURLY	parser.mli	/^  | LCURLY of (Support.Error.info)$/;"	C	type:token
+LCURLYBAR	parser.ml	/^  | LCURLYBAR of (Support.Error.info)$/;"	C	type:token
+LCURLYBAR	parser.mli	/^  | LCURLYBAR of (Support.Error.info)$/;"	C	type:token
+LEFTARROW	parser.ml	/^  | LEFTARROW of (Support.Error.info)$/;"	C	type:token
+LEFTARROW	parser.mli	/^  | LEFTARROW of (Support.Error.info)$/;"	C	type:token
+LPAREN	parser.ml	/^  | LPAREN of (Support.Error.info)$/;"	C	type:token
+LPAREN	parser.mli	/^  | LPAREN of (Support.Error.info)$/;"	C	type:token
+LSQUARE	parser.ml	/^  | LSQUARE of (Support.Error.info)$/;"	C	type:token
+LSQUARE	parser.mli	/^  | LSQUARE of (Support.Error.info)$/;"	C	type:token
+LSQUAREBAR	parser.ml	/^  | LSQUAREBAR of (Support.Error.info)$/;"	C	type:token
+LSQUAREBAR	parser.mli	/^  | LSQUAREBAR of (Support.Error.info)$/;"	C	type:token
+LT	parser.ml	/^  | LT of (Support.Error.info)$/;"	C	type:token
+LT	parser.mli	/^  | LT of (Support.Error.info)$/;"	C	type:token
+Lexer	lexer.ml	1;"	M
+Main	main.ml	1;"	M
+NAT	parser.ml	/^  | NAT of (Support.Error.info)$/;"	C	type:token
+NAT	parser.mli	/^  | NAT of (Support.Error.info)$/;"	C	type:token
+NameBind	syntax.ml	/^    | NameBind $/;"	C	type:binding
+NameBind	syntax.mli	/^    NameBind $/;"	C	type:binding
+NoRuleApplies	core.ml	/^exception NoRuleApplies$/;"	e
+OBJS	Makefile	/^OBJS = support.cmo syntax.cmo core.cmo parser.cmo lexer.cmo main.cmo$/;"	m
+PRED	parser.ml	/^  | PRED of (Support.Error.info)$/;"	C	type:token
+PRED	parser.mli	/^  | PRED of (Support.Error.info)$/;"	C	type:token
+Parser	parser.ml	1;"	M
+Parser	parser.mli	1;"	M
+Pervasive	support.ml	1;"	M
+Pervasive	support.mli	1;"	M
+RCURLY	parser.ml	/^  | RCURLY of (Support.Error.info)$/;"	C	type:token
+RCURLY	parser.mli	/^  | RCURLY of (Support.Error.info)$/;"	C	type:token
+RPAREN	parser.ml	/^  | RPAREN of (Support.Error.info)$/;"	C	type:token
+RPAREN	parser.mli	/^  | RPAREN of (Support.Error.info)$/;"	C	type:token
+RSQUARE	parser.ml	/^  | RSQUARE of (Support.Error.info)$/;"	C	type:token
+RSQUARE	parser.mli	/^  | RSQUARE of (Support.Error.info)$/;"	C	type:token
+SEMI	parser.ml	/^  | SEMI of (Support.Error.info)$/;"	C	type:token
+SEMI	parser.mli	/^  | SEMI of (Support.Error.info)$/;"	C	type:token
+SLASH	parser.ml	/^  | SLASH of (Support.Error.info)$/;"	C	type:token
+SLASH	parser.mli	/^  | SLASH of (Support.Error.info)$/;"	C	type:token
+STAR	parser.ml	/^  | STAR of (Support.Error.info)$/;"	C	type:token
+STAR	parser.mli	/^  | STAR of (Support.Error.info)$/;"	C	type:token
+SUCC	parser.ml	/^  | SUCC of (Support.Error.info)$/;"	C	type:token
+SUCC	parser.mli	/^  | SUCC of (Support.Error.info)$/;"	C	type:token
+Support	support.ml	1;"	M
+Support	support.mli	1;"	M
+Syntax	syntax.ml	1;"	M
+Syntax	syntax.mli	1;"	M
+THEN	parser.ml	/^  | THEN of (Support.Error.info)$/;"	C	type:token
+THEN	parser.mli	/^  | THEN of (Support.Error.info)$/;"	C	type:token
+TRIANGLE	parser.ml	/^  | TRIANGLE of (Support.Error.info)$/;"	C	type:token
+TRIANGLE	parser.mli	/^  | TRIANGLE of (Support.Error.info)$/;"	C	type:token
+TRUE	parser.ml	/^  | TRUE of (Support.Error.info)$/;"	C	type:token
+TRUE	parser.mli	/^  | TRUE of (Support.Error.info)$/;"	C	type:token
+TTOP	parser.ml	/^  | TTOP of (Support.Error.info)$/;"	C	type:token
+TTOP	parser.mli	/^  | TTOP of (Support.Error.info)$/;"	C	type:token
+TYPE	parser.ml	/^  | TYPE of (Support.Error.info)$/;"	C	type:token
+TYPE	parser.mli	/^  | TYPE of (Support.Error.info)$/;"	C	type:token
+TmAbbBind	syntax.ml	/^    | TmAbbBind of term * (ty option)$/;"	C	type:binding
+TmAbbBind	syntax.mli	/^  | TmAbbBind of term * (ty option)$/;"	C	type:binding
+TmAbs	syntax.ml	/^    | TmAbs of info * string * ty * term$/;"	C	type:term
+TmAbs	syntax.mli	/^  | TmAbs of info * string * ty * term$/;"	C	type:term
+TmApp	syntax.ml	/^    | TmApp of info * term * term$/;"	C	type:term
+TmApp	syntax.mli	/^  | TmApp of info * term * term$/;"	C	type:term
+TmFalse	syntax.ml	/^    | TmFalse of info$/;"	C	type:term
+TmFalse	syntax.mli	/^  | TmFalse of info$/;"	C	type:term
+TmIf	syntax.ml	/^    | TmIf of info * term * term * term$/;"	C	type:term
+TmIf	syntax.mli	/^  | TmIf of info * term * term * term$/;"	C	type:term
+TmIsZero	syntax.ml	/^    | TmIsZero of info * term$/;"	C	type:term
+TmIsZero	syntax.mli	/^  | TmIsZero of info * term$/;"	C	type:term
+TmPred	syntax.ml	/^    | TmPred of info * term$/;"	C	type:term
+TmPred	syntax.mli	/^  | TmPred of info * term$/;"	C	type:term
+TmSucc	syntax.ml	/^    | TmSucc of info * term$/;"	C	type:term
+TmSucc	syntax.mli	/^  | TmSucc of info * term$/;"	C	type:term
+TmTrue	syntax.ml	/^    | TmTrue of info$/;"	C	type:term
+TmTrue	syntax.mli	/^    TmTrue of info$/;"	C	type:term
+TmVar	syntax.ml	/^    | TmVar of info * int * int$/;"	C	type:term
+TmVar	syntax.mli	/^  | TmVar of info * int * int$/;"	C	type:term
+TmZero	syntax.ml	/^    | TmZero of info$/;"	C	type:term
+TmZero	syntax.mli	/^  | TmZero of info$/;"	C	type:term
+TyAbbBind	syntax.ml	/^    | TyAbbBind of ty$/;"	C	type:binding
+TyAbbBind	syntax.mli	/^  | TyAbbBind of ty$/;"	C	type:binding
+TyArr	syntax.ml	/^  | TyArr of ty * ty$/;"	C	type:ty
+TyArr	syntax.mli	/^  | TyArr of ty * ty$/;"	C	type:ty
+TyBool	syntax.ml	/^  | TyBool$/;"	C	type:ty
+TyBool	syntax.mli	/^  | TyBool$/;"	C	type:ty
+TyId	syntax.ml	/^  | TyId of string$/;"	C	type:ty
+TyId	syntax.mli	/^  | TyId of string$/;"	C	type:ty
+TyNat	syntax.ml	/^  | TyNat$/;"	C	type:ty
+TyNat	syntax.mli	/^  | TyNat$/;"	C	type:ty
+TyTop	syntax.ml	/^  | TyTop$/;"	C	type:ty
+TyTop	syntax.mli	/^  | TyTop$/;"	C	type:ty
+TyVar	syntax.ml	/^    TyVar of int * int$/;"	C	type:ty
+TyVar	syntax.mli	/^    TyVar of int * int$/;"	C	type:ty
+TyVarBind	syntax.ml	/^    | TyVarBind$/;"	C	type:binding
+TyVarBind	syntax.mli	/^  | TyVarBind$/;"	C	type:binding
+UCID	parser.ml	/^  | UCID of (string Support.Error.withinfo)$/;"	C	type:token
+UCID	parser.mli	/^  | UCID of (string Support.Error.withinfo)$/;"	C	type:token
+USCORE	parser.ml	/^  | USCORE of (Support.Error.info)$/;"	C	type:token
+USCORE	parser.mli	/^  | USCORE of (Support.Error.info)$/;"	C	type:token
+VBAR	parser.ml	/^  | VBAR of (Support.Error.info)$/;"	C	type:token
+VBAR	parser.mli	/^  | VBAR of (Support.Error.info)$/;"	C	type:token
+VarBind	syntax.ml	/^    | VarBind of ty$/;"	C	type:binding
+VarBind	syntax.mli	/^  | VarBind of ty$/;"	C	type:binding
+addStr	lexer.ml	/^let addStr ch =$/;"	v
+addbinding	syntax.ml	/^let addbinding ctx x bind = (x,bind)::ctx$/;"	v
+addbinding	syntax.mli	/^val addbinding : context -> string -> binding -> context$/;"	v
+addname	syntax.ml	/^let addname ctx x = addbinding ctx x NameBind$/;"	v
+addname	syntax.mli	/^val addname: context -> string -> context$/;"	v
+alreadyImported	main.ml	/^let alreadyImported = ref ([] : string list)$/;"	v
+argDefs	main.ml	/^let argDefs = [$/;"	v
+binding	syntax.ml	/^type binding =$/;"	t
+binding	syntax.mli	/^type binding =$/;"	t
+bindingshift	syntax.ml	/^let bindingshift d bind =$/;"	v
+buildfun	lexer.ml	/^type buildfun = info -> Parser.token$/;"	t
+checkbinding	main.ml	/^let checkbinding fi ctx b = match b with$/;"	v
+command	syntax.ml	/^type command =$/;"	t
+command	syntax.mli	/^type command =$/;"	t
+computety	core.ml	/^let rec computety ctx tyT = match tyT with$/;"	v
+context	syntax.ml	/^type context = (string * binding) list$/;"	t
+context	syntax.mli	/^type context$/;"	t
+create	lexer.ml	/^let create inFile stream =$/;"	v
+createID	lexer.ml	/^let createID i str =$/;"	v
+ctxlength	syntax.ml	/^let ctxlength ctx = List.length ctx$/;"	v
+ctxlength	syntax.mli	/^val ctxlength : context -> int$/;"	v
+emptycontext	syntax.ml	/^let emptycontext = []$/;"	v
+emptycontext	syntax.mli	/^val emptycontext : context $/;"	v
+eval	core.ml	/^let rec eval ctx t =$/;"	v
+eval	core.mli	/^val eval : context -> term -> term $/;"	v
+eval1	core.ml	/^let rec eval1 ctx t = match t with$/;"	v
+evalbinding	core.ml	/^let evalbinding ctx b = match b with$/;"	v
+evalbinding	core.mli	/^val evalbinding : context -> binding -> binding $/;"	v
+extractLineno	lexer.ml	/^let extractLineno yytext offset =$/;"	v
+getTypeFromContext	syntax.ml	/^let getTypeFromContext fi ctx i =$/;"	v
+getTypeFromContext	syntax.mli	/^val getTypeFromContext : info -> context -> int -> ty$/;"	v
+getbinding	syntax.mli	/^val getbinding : info -> context -> int -> binding$/;"	v
+gettyabb	core.ml	/^let gettyabb ctx i = $/;"	v
+index2name	syntax.ml	/^let index2name fi ctx x =$/;"	v
+index2name	syntax.mli	/^val index2name : info -> context -> int -> string$/;"	v
+info	lexer.ml	/^let info lexbuf =$/;"	v
+isnamebound	syntax.ml	/^let rec isnamebound ctx x =$/;"	v
+isnamebound	syntax.mli	/^val isnamebound : context -> string -> bool$/;"	v
+isnumber	core.ml	/^let rec isnumber ctx t = match t with$/;"	v
+isval	core.ml	/^let rec isval ctx t = match t with$/;"	v
+join	core.ml	/^let rec join ctx tyS tyT =$/;"	v
+lineno	lexer.ml	/^let lineno   = ref 1$/;"	v
+main	lexer.ml	/^let rec main lexbuf =$/;"	v
+main	main.ml	/^let main () = $/;"	v
+msg	syntax.ml	/^    let msg =$/;"	v
+name2index	syntax.ml	/^let rec name2index fi ctx x =$/;"	v
+name2index	syntax.mli	/^val name2index : info -> context -> string -> int$/;"	v
+newline	lexer.ml	/^let newline lexbuf = incr lineno; start := (Lexing.lexeme_start lexbuf)$/;"	v
+openfile	main.ml	/^let openfile infile = $/;"	v
+parseFile	main.ml	/^let parseFile inFile =$/;"	v
+pickfreshname	syntax.ml	/^let rec pickfreshname ctx x =$/;"	v
+prbinding	syntax.ml	/^let prbinding ctx b = match b with$/;"	v
+prbinding	syntax.mli	/^val prbinding : context -> binding -> unit$/;"	v
+prbindingty	main.ml	/^let prbindingty ctx b = match b with$/;"	v
+printtm	syntax.ml	/^let printtm ctx t = printtm_Term true ctx t $/;"	v
+printtm	syntax.mli	/^val printtm: context -> term -> unit$/;"	v
+printtm_ATerm	syntax.mli	/^val printtm_ATerm: bool -> context -> term -> unit$/;"	v
+printtm_Term	syntax.ml	/^let rec printtm_Term outer ctx t = match t with$/;"	v
+printty	syntax.ml	/^let printty ctx tyT = printty_Type true ctx tyT $/;"	v
+printty	syntax.mli	/^val printty : context -> ty -> unit$/;"	v
+printty_Type	syntax.ml	/^let rec printty_Type outer ctx tyT = match tyT with$/;"	v
+process_command	main.ml	/^let rec process_command ctx cmd = match cmd with$/;"	v
+process_file	main.ml	/^let process_file f ctx =$/;"	v
+res	main.ml	/^let res = $/;"	v
+reservedWords	lexer.ml	/^let reservedWords = [$/;"	v
+resetStr	lexer.ml	/^let resetStr () = stringEnd := 0$/;"	v
+searchpath	main.ml	/^let searchpath = ref [""]$/;"	v
+simplifyty	core.ml	/^let rec simplifyty ctx tyT =$/;"	v
+simplifyty	core.mli	/^val simplifyty : context -> ty -> ty$/;"	v
+stringBuffer	lexer.ml	/^let stringBuffer = ref (String.create 2048)$/;"	v
+stringEnd	lexer.ml	/^let stringEnd = ref 0$/;"	v
+subtype	core.ml	/^let rec subtype ctx tyS tyT =$/;"	v
+subtype	core.mli	/^val subtype : context -> ty -> ty -> bool$/;"	v
+symbolTable	lexer.ml	/^let (symbolTable : (string,buildfun) Hashtbl.t) = Hashtbl.create 1024$/;"	v
+term	syntax.ml	/^type term =$/;"	t
+term	syntax.mli	/^type term =$/;"	t
+termShift	syntax.ml	/^let termShift d t = termShiftAbove d 0 t$/;"	v
+termShift	syntax.mli	/^val termShift: int -> term -> term$/;"	v
+termShiftAbove	syntax.ml	/^let termShiftAbove d c t =$/;"	v
+termSubst	syntax.ml	/^let termSubst j s t =$/;"	v
+termSubstTop	syntax.mli	/^val termSubstTop: term -> term -> term$/;"	v
+text	lexer.ml	/^let text = Lexing.lexeme$/;"	v
+tmInfo	syntax.mli	/^val tmInfo: term -> info$/;"	v
+tmmap	syntax.ml	/^let tmmap onvar ontype c t = $/;"	v
+token	parser.ml	/^type token =$/;"	t
+token	parser.mli	/^type token =$/;"	t
+toplevel	parser.mli	/^val toplevel :$/;"	v
+ty	syntax.ml	/^type ty =$/;"	t
+ty	syntax.mli	/^type ty =$/;"	t
+tyS	core.ml	/^   let tyS = simplifyty ctx tyS in$/;"	v
+tyT	core.ml	/^   let tyT = simplifyty ctx tyT in$/;"	v
+tyeqv	core.ml	/^let rec tyeqv ctx tyS tyT =$/;"	v
+tyeqv	core.mli	/^val tyeqv : context -> ty -> ty -> bool$/;"	v
+typeShift	syntax.ml	/^let typeShift d tyT = typeShiftAbove d 0 tyT$/;"	v
+typeShift	syntax.mli	/^val typeShift : int -> ty -> ty$/;"	v
+typeShiftAbove	syntax.ml	/^let typeShiftAbove d c tyT =$/;"	v
+typeSubstTop	syntax.ml	/^let typeSubstTop tyS tyT = $/;"	v
+typeSubstTop	syntax.mli	/^val typeSubstTop: ty -> ty -> ty$/;"	v
+typeof	core.ml	/^let rec typeof ctx t =$/;"	v
+typeof	core.mli	/^val typeof : context -> term -> ty$/;"	v
+tytermSubst	syntax.ml	/^let rec tytermSubst tyS j t =$/;"	v
+tytermSubstTop	syntax.mli	/^val tytermSubstTop: ty -> term -> term$/;"	v
+yyact	parser.ml	/^let yyact = [|$/;"	v
+yycheck	parser.ml	/^let yycheck = "\\003\\000\\$/;"	v
+yydefred	parser.ml	/^let yydefred = "\\000\\000\\$/;"	v
+yydgoto	parser.ml	/^let yydgoto = "\\002\\000\\$/;"	v
+yygindex	parser.ml	/^let yygindex = "\\000\\000\\$/;"	v
+yylen	parser.ml	/^let yylen = "\\002\\000\\$/;"	v
+yylhs	parser.ml	/^let yylhs = "\\255\\255\\$/;"	v
+yynames_block	parser.ml	/^let yynames_block = "\\$/;"	v
+yynames_const	parser.ml	/^let yynames_const = "\\$/;"	v
+yyrindex	parser.ml	/^let yyrindex = "\\000\\000\\$/;"	v
+yysindex	parser.ml	/^let yysindex = "\\007\\000\\$/;"	v
+yytable	parser.ml	/^let yytable = "\\021\\000\\$/;"	v
+yytablesize	parser.ml	/^let yytablesize = 297$/;"	v
+yytransl_block	parser.ml	/^let yytransl_block = [|$/;"	v
+yytransl_const	parser.ml	/^let yytransl_const = [|$/;"	v

@@ -56,7 +56,7 @@ let checkbinding fi ctx b = match b with
   | TmAbbBind(t,None) -> TmAbbBind(t, Some(typeof ctx t))
   | TmAbbBind(t,Some(tyT)) ->
      let tyT' = typeof ctx t in
-     if tyeqv ctx tyT' tyT then TmAbbBind(t,Some(tyT))
+     if subtype ctx tyT' tyT then TmAbbBind(t,Some(tyT))
      else error fi "Type of binding does not match declared type"
   | TyVarBind -> TyVarBind
   | TyAbbBind(tyT) -> TyAbbBind(tyT)

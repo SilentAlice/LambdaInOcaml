@@ -10,6 +10,8 @@ type ty =
   | TyArr of ty * ty
   | TyBool
   | TyNat
+  | TyTop
+  | TyRecord of (string * ty) list
 
 type term =
     TmTrue of info
@@ -22,6 +24,7 @@ type term =
   | TmVar of info * int * int
   | TmAbs of info * string * ty * term
   | TmApp of info * term * term
+  | TmRecord of info * (string * term) list
 
 type binding =
     NameBind 

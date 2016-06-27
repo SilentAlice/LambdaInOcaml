@@ -34,6 +34,7 @@ open Syntax
 %token <Support.Error.info> PRED
 %token <Support.Error.info> ISZERO
 %token <Support.Error.info> NAT
+%token <Support.Error.info> TTOP
 
 /* Identifier and constant value tokens */
 %token <string Support.Error.withinfo> UCID  /* uppercase-initial */
@@ -144,10 +145,17 @@ AType :
             TyVar(name2index $1.i ctx $1.v, ctxlength ctx)
           else 
             TyId($1.v) }
+  | LCURLY FieldTypes RCURLY
+      { fun ctx ->
+          TyRecord($2 ctx 1) }
+
   | BOOL
       { fun ctx -> TyBool }
   | NAT
       { fun ctx -> TyNat }
+  | TTOP
+      { fun ctx -> TyTop }
+
 
 TyBinder :
     /* empty */
@@ -218,6 +226,9 @@ ATerm :
       { fun ctx -> TmTrue($1) }
   | FALSE
       { fun ctx -> TmFalse($1) }
+  | LCURLY Fields RCURLY
+      { fun ctx ->
+          TmRecord($1, $2 ctx 1) }
   | LCID 
       { fun ctx ->
           TmVar($1.i, name2index $1.i ctx $1.v, ctxlength ctx) }

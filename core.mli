@@ -11,3 +11,4 @@ val typeof : context -> term -> ty
 val evalbinding : context -> binding -> binding 
 val tyeqv : context -> ty -> ty -> bool
 val simplifyty : context -> ty -> ty
+val subtype : context -> ty -> ty -> bool

@@ -23,7 +23,7 @@ let reservedWords = [
   ("pred", fun i -> Parser.PRED i);
   ("iszero", fun i -> Parser.ISZERO i);
   ("Nat", fun i -> Parser.NAT i);
-  
+  ("Top", fun i -> Parser.TTOP i);
   (* Symbols *)
   ("_", fun i -> Parser.USCORE i);
   ("'", fun i -> Parser.APOSTROPHE i);

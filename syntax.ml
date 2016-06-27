@@ -10,6 +10,8 @@ type ty =
   | TyArr of ty * ty
   | TyBool
   | TyNat
+  | TyTop
+  | TyRecord of (string * ty) list
 
 (* Datatypes, extended with app TmApp TmAbs TmVar *)
 type term =
@@ -24,6 +26,7 @@ type term =
     | TmVar of info * int * int
     | TmAbs of info * string * ty * term
     | TmApp of info * term * term
+    | TmRecord of info * (string * term) list
 
 (* var should be bound a value *)
 type binding =
@@ -88,6 +91,8 @@ let tymap onvar c tyT =
   | TyId(b) as tyT -> tyT
   | TyBool -> TyBool
   | TyNat -> TyNat
+  | TyTop -> TyTop
+  | TyRecord(fieldtys) -> TyRecord(List.map (fun (li,tyTi) -> (li, walk c tyTi)) fieldtys)
   | TyArr(tyT1,tyT2) -> TyArr(walk c tyT1,walk c tyT2)
   in walk c tyT
 
@@ -99,6 +104,10 @@ let tmmap onvar ontype c t =
   | TmTrue(fi) as t -> t
   | TmFalse(fi) as t -> t
   | TmIf(fi,t1,t2,t3) -> TmIf(fi,walk c t1,walk c t2,walk c t3)
+  | TmRecord(fi,fields) -> TmRecord(fi,List.map (fun (li,ti) ->
+                                               (li,walk c ti))
+                                    fields)
+
   | TmZero(fi)      -> TmZero(fi)
   | TmSucc(fi,t1)   -> TmSucc(fi, walk c t1)
   | TmPred(fi,t1)   -> TmPred(fi, walk c t1)
@@ -196,7 +205,7 @@ let tmInfo t = match t with
   | TmSucc(fi,_) -> fi
   | TmPred(fi,_) -> fi
   | TmIsZero(fi,_) -> fi
-
+  | TmRecord(fi,_) -> fi
 (* ---------------------------------------------------------------------- *)
 (* Printing *)
 
@@ -247,7 +256,20 @@ and printty_AType outer ctx tyT = match tyT with
             ^ (List.fold_left (fun s (x,_) -> s ^ " " ^ x) "" ctx)
             ^ " }]")
   | TyId(b) -> pr b
+  | TyTop -> pr "Top"
   | TyBool -> pr "Bool"
+  | TyRecord(fields) ->
+        let pf i (li,tyTi) =
+          if (li <> ((string_of_int i))) then (pr li; pr ":"); 
+          printty_Type false ctx tyTi 
+        in let rec p i l = match l with 
+            [] -> ()
+          | [f] -> pf i f
+          | f::rest ->
+              pf i f; pr","; if outer then print_space() else break(); 
+              p (i+1) rest
+        in pr "{"; open_hovbox 0; p 1 fields; pr "}"; cbox()
+
   | TyNat -> pr "Nat"
   | tyT -> pr "("; printty_Type outer ctx tyT; pr ")"
 
@@ -294,6 +316,18 @@ and printtm_PathTerm outer ctx t = match t with
 and printtm_ATerm outer ctx t = match t with
   | TmTrue(_) -> pr "true"
   | TmFalse(_) -> pr "false"
+  | TmRecord(fi, fields) ->
+       let pf i (li,ti) =
+         if (li <> ((string_of_int i))) then (pr li; pr "="); 
+         printtm_Term false ctx ti 
+       in let rec p i l = match l with
+           [] -> ()
+         | [f] -> pf i f
+         | f::rest ->
+             pf i f; pr","; if outer then print_space() else break(); 
+             p (i+1) rest
+       in pr "{"; open_hovbox 0; p 1 fields; pr "}"; cbox()
+
   | TmZero(fi) ->
        pr "0"
   | TmSucc(_,t1) ->
